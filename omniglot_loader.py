@@ -1,19 +1,37 @@
 from pathlib import Path
 from scipy.misc import imread
 import numpy as np
+import pickle
+
+from omniglot_service import OmniglotService
 
 class OmniglotLoader:
     
     def __init__(self, path, train_folder, test_folder):
         self.__path = Path(path)
         self.__train_folder = self.__path.joinpath(train_folder)
-        self.__test_folder =self.__path.joinpath(test_folder)
+        self.__test_folder = self.__path.joinpath(test_folder)
+        self.__train_file = self.__path.joinpath('train.pickle')
+        self.__test_file = self.__path.joinpath('test.pickle')
+
+        self.__data_service = OmniglotService(self.__path)
     
     def load_data(self):
-        train_data = self.__load_alphabets(self.__train_folder)
-        test_data = self.__load_alphabets(self.__test_folder)
+        train_data = self.__load_data(self.__train_file, self.__train_folder)
+        test_data = self.__load_data(self.__test_file, self.__test_folder, train_data=False)
 
         return (train_data, test_data)
+
+    def __load_data(self, file, folder, train_data=True):
+        if file.exists():
+            data = self.__read_data(str(file))
+        else:
+            if not folder.exists():
+                self.__data_service.get_data(folder, train_data)
+            data = self.__load_alphabets(folder)
+            self.__save_data(str(file), data)
+
+        return data
     
     def __load_alphabets(self, alphabets_folder):
         alphabet_character_paths = self.__get_alphabet_character_paths(alphabets_folder)
@@ -47,3 +65,11 @@ class OmniglotLoader:
 
         return images
         
+    def __save_data(self, path, data):
+        with open(str(path), "wb") as f:
+	        pickle.dump(data, f)
+
+    def __read_data(self, path):
+        with open(path, "rb") as f:
+            data = pickle.load(f)
+        return data
