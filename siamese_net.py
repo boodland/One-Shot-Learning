@@ -1,9 +1,9 @@
-from keras.layers import Input, Conv2D, Lambda, merge, Dense, Flatten, MaxPooling2D
+from keras.layers import Input, Conv2D, Lambda, Dense, Flatten, MaxPooling2D
 from keras.models import Model, Sequential
 from keras.initializers import RandomNormal
 from keras.regularizers import l2
 from keras import backend as K
-from keras.optimizers import SGD,Adam
+from keras.optimizers import Adam
 from keras.losses import binary_crossentropy
 import numpy as np
 
