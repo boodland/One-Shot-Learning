@@ -1,4 +1,3 @@
-from omniglot_service import OmniglotService
 from omniglot_loader import OmniglotLoader
 
 import numpy as np
@@ -11,7 +10,6 @@ class OmniglotDataset:
         self.__train_folder = "train_alphabets"
         self.__test_folder = "test_alphabets"
         
-        self.__data_service = OmniglotService(self.__path, self.__train_folder, self.__test_folder)
         self.__data_loader = OmniglotLoader(self.__path, self.__train_folder, self.__test_folder)
         
         self.train_data = ()
@@ -19,7 +17,6 @@ class OmniglotDataset:
         self.data_shape = ()
     
     def load(self):
-        self.__data_service.get_data()
         self.train_data, self.test_data = self.__data_loader.load_data()
         _, _, height, width, channel = self.train_data[0].shape
         self.data_shape = (height, width, channel)
