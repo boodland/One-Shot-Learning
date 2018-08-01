@@ -9,7 +9,26 @@ class OneShotRunner():
 
         self.__number_ways = 20
         self.__number_validations = 250
+    
+    def train(self, number_iterations=10000):
+        test_every = 1000 # interval for evaluating on one-shot tasks
+        loss_every=100 # interval for printing loss (iterations)
+        #weights_path = os.path.join(PATH, "weights")
+        print("training")
+        for i in range(number_iterations):
+            model_input, labels = self.__get_batch()
+            loss = self.model.train_on_batch(model_input, labels)
 
+            if i % loss_every == 0:
+                print("iteration {}, training loss: {:.2f},".format(i,loss))
+
+            if i % test_every == 0:
+                print("evaluating")
+                accuracy = self.__test_one_shot()
+                print(f'Accuracy at iteration {i} = {accuracy}')
+        
+        print("training loss after training: {:.2f},".format(loss))
+        
     def __get_batch(self, batch_size=32):       
         half_batch_size = batch_size // 2
         left_encoder_input = []
