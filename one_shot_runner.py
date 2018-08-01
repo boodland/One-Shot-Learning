@@ -8,9 +8,8 @@ class OneShotRunner():
         self.model = model
 
         self.__number_ways = 20
-        self.__number_validations = 250
     
-    def train(self, number_iterations=10000):
+    def train(self, number_iterations=10000, num_validation=500):
         test_every = 1000 # interval for evaluating on one-shot tasks
         loss_every=100 # interval for printing loss (iterations)
         #weights_path = os.path.join(PATH, "weights")
@@ -24,7 +23,7 @@ class OneShotRunner():
 
             if i % test_every == 0:
                 print("evaluating")
-                accuracy = self.__test_one_shot()
+                accuracy = self.__test_one_shot(self.__number_ways, num_validation)
                 print(f'Accuracy at iteration {i} = {accuracy}')
         
         print("training loss after training: {:.2f},".format(loss))
@@ -45,7 +44,7 @@ class OneShotRunner():
             
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
 
-    def __test_one_shot(self, num_ways=20, num_validation=250):
+    def __test_one_shot(self, num_ways, num_validation):
         accuracy = 0
         for _ in range(num_validation):
             model_input, labels = self.__get_one_shot_batch(num_ways)
