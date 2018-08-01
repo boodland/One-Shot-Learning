@@ -77,7 +77,7 @@ class SiameseNet:
         
         model = Model(inputs=[left_encoder_input, right_encoder_input], outputs= prediction, name='Siamese')
 
-        optimizer = Adam(0.00006)
+        optimizer = Adam()
         model.compile(loss='binary_crossentropy', optimizer=optimizer)
 
         return model
