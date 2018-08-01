@@ -16,58 +16,35 @@ class OmniglotDataset:
         
         self.train_data = ()
         self.test_data = ()
-        self.input_shape = ()
+        self.data_shape = ()
     
     def load(self):
         self.__data_service.get_data()
         self.train_data, self.test_data = self.__data_loader.load_data()
-        _, _, height, width = self.train_data[0].shape
-        self.data_shape = (height, width, 1)
+        _, _, height, width, channel = self.train_data[0].shape
+        self.data_shape = (height, width, channel)
 
-    def get_batch(self, batch_size=32):
+    def get_data_classes(self, num_classes, data_type='train'):
+        data = self.train_data[0] if data_type=='train' else self.test_data[0]
+        classes = np.random.choice(data.shape[0], size=(num_classes,), replace=False)
         
-        half_batch_size = batch_size // 2
-        num_classes, _, height, width = self.train_data[0].shape
-        classes_to_sample = np.random.choice(num_classes, size=(batch_size,), replace=False)
-        pairs = [np.zeros((batch_size, height, width, 1)) for i in range(2)]
-        targets = np.zeros((batch_size,))
-        targets[half_batch_size:] = 1
+        return classes
 
-        for batch_ind in range(0, half_batch_size):
-            class_ind = classes_to_sample[batch_ind]
-            first_pair, second_pair = self.__get_different_pair(class_ind)
-            pairs[0][batch_ind,:,:,:] = first_pair
-            pairs[1][batch_ind,:,:,:] = second_pair
-            
-        for batch_ind in range(half_batch_size, batch_size):
-            class_ind = classes_to_sample[batch_ind]
-            first_pair, second_pair = self.__get_same_pair(class_ind)
-            pairs[0][batch_ind,:,:,:] = first_pair
-            pairs[1][batch_ind,:,:,:] = second_pair
-            
-        return pairs, targets
-
-    def __get_same_pair(self, class_ind):
-        _, num_images, height, width = self.train_data[0].shape
-        image_indices = list(range(0, num_images))
-        image_ind = np.random.choice(image_indices)
-        first_pair = self.train_data[0][class_ind, image_ind].reshape(height, width, 1)
+    def get_image_pair(self, class_value, same_class=False, data_type='train'):
+        data = self.train_data[0] if data_type=='train' else self.test_data[0]
+        num_classes, num_images, height, width, _ = data.shape
+        image_indices = np.random.choice(num_images, size=2, replace=(not same_class))
         
-        image_indices.remove(image_ind)
-        image_ind = np.random.choice(image_indices)
-        second_pair = self.train_data[0][class_ind, image_ind].reshape(height, width, 1)
-
-        return first_pair, second_pair
-
-    def __get_different_pair(self, class_ind):
-        num_classes, num_images, height, width = self.train_data[0].shape
-        image_ind = np.random.randint(0, num_images)
-        first_pair = self.train_data[0][class_ind, image_ind].reshape(height, width, 1)
+        first_image = data[class_value, image_indices[0]].reshape(height, width, 1)
         
-        classes_indices = list(range(0, num_classes))
-        classes_indices.remove(class_ind)
-        image_ind = np.random.randint(0, num_images)
-        class_ind = np.random.choice(classes_indices)
-        second_pair = self.train_data[0][class_ind, image_ind].reshape(height, width, 1)
+        second_class = class_value if same_class else self.__get_different_value(class_value, num_classes)
+        second_image = data[second_class, image_indices[1]].reshape(height, width, 1)
 
-        return first_pair, second_pair
+        return first_image, second_image
+
+    def __get_different_value(self, value, max_values):
+        values = list(range(0, max_values))
+        values.remove(value)
+        different_value = np.random.choice(values)
+        
+        return different_value
