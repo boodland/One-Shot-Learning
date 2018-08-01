@@ -19,7 +19,7 @@ class OmniglotLoader:
         alphabet_character_paths = self.__get_alphabet_character_paths(alphabets_folder)
         class_images = self.__get_class_images(alphabets_folder, alphabet_character_paths)
 
-        return class_images, alphabet_character_paths
+        return np.expand_dims(class_images, axis=class_images.ndim), alphabet_character_paths
 
     def __get_alphabet_character_paths(self, alphabets_folder):
         alphabet_character_paths = [
