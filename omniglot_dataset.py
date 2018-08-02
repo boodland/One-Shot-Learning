@@ -27,7 +27,7 @@ class OmniglotDataset:
         
         return classes
 
-    def get_image_pair(self, class_value, same_class=False, data_type='train'):
+    def get_image_pair(self, class_value, data_type='train', same_class=False):
         data = self.train_data[0] if data_type=='train' else self.test_data[0]
         num_classes, num_images, _, _, _ = data.shape
         image_indices = np.random.choice(num_images, size=2, replace=(not same_class))
