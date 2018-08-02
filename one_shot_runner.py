@@ -50,7 +50,7 @@ class OneShotRunner():
             if iteration % self.__evaluate_every == 0:
                 accuracy = self.__evaluate(number_ways, iteration, number_validations)
                 self.__training_accuracy.append(accuracy)
-                print(f'iteration {iteration}, accuracy = {accuracy}')
+                print(f'iteration {iteration}, accuracy = {accuracy:.2f}')
 
             if iteration % self.__store_every == 0:
                 print(f'Saving training data at iteration {iteration}')
