@@ -1,7 +1,7 @@
 from pathlib import Path
 import numpy as np
 from sklearn.utils import shuffle
-import pickle
+from utils import Utils
 
 class OneShotRunner():
     def __init__(self, dataset, model, preload_data=True):
@@ -34,7 +34,7 @@ class OneShotRunner():
         
         if self.__training_data_file.exists():
             print('Preloading training data')
-            data = self.__read_data(self.__training_data_file)
+            data = Utils.read_data(str(self.__training_data_file))
             self.__training_loss, self.__training_accuracy, self.__best_accuracy = data
     
     def train(self, number_ways=20, number_iterations=10000, number_validations=500):
@@ -55,7 +55,7 @@ class OneShotRunner():
             if iteration % self.__store_every == 0:
                 print(f'Saving training data at iteration {iteration}')
                 data = self.__training_loss, self.__training_accuracy, self.__best_accuracy
-                self.__save_data(self.__training_data_file, data)
+                Utils.save_data(str(self.__training_data_file), data)
         
         print(f'Data after training: loss = {loss}, best accuracy = {self.__best_accuracy:.2f}')
         
@@ -70,7 +70,7 @@ class OneShotRunner():
             if iteration % predict_every == 0:
                 print(f'Predictions at iteration {iteration} finished')
         data = train_accuracy, test_accuracy
-        self.__save_data(self.__predictions_data_file, data)
+        Utils.save_data(str(self.__predictions_data_file), data)
 
     def __evaluate(self, number_ways, iteration, number_validations):
         accuracy = self.__test_one_shot(number_ways, number_validations)
@@ -129,12 +129,3 @@ class OneShotRunner():
 
         left_encoder_input, rigth_encoder_input, labels = shuffle(left_encoder_input, rigth_encoder_input, labels)
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
-
-    def __save_data(self, file, data):
-        with open(str(self.__training_data_file), "wb") as f:
-	        pickle.dump(data, f)
-
-    def __read_data(self, file):
-        with open(str(file), "rb") as f:
-            data = pickle.load(f)
-        return data

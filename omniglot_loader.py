@@ -1,8 +1,8 @@
 from pathlib import Path
 from scipy.misc import imread
 import numpy as np
-import pickle
 
+from utils import Utils
 from omniglot_service import OmniglotService
 
 class OmniglotLoader:
@@ -24,12 +24,12 @@ class OmniglotLoader:
 
     def __load_data(self, file, folder, train_data=True):
         if file.exists():
-            data = self.__read_data(str(file))
+            data = Utils.read_data(str(file))
         else:
             if not folder.exists():
                 self.__data_service.get_data(folder, train_data)
             data = self.__load_alphabets(folder)
-            self.__save_data(str(file), data)
+            Utils.save_data(str(file), data)
 
         return data
     
@@ -64,12 +64,3 @@ class OmniglotLoader:
         ]
 
         return images
-        
-    def __save_data(self, path, data):
-        with open(str(path), "wb") as f:
-	        pickle.dump(data, f)
-
-    def __read_data(self, path):
-        with open(path, "rb") as f:
-            data = pickle.load(f)
-        return data
