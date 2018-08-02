@@ -39,7 +39,7 @@ class OneShotRunner():
     
     def train(self, number_ways=20, number_iterations=10000, number_validations=500):
         print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways evaluation')
-        for iteration in range(1, number_iterations):
+        for iteration in range(1, number_iterations+1):
             model_input, labels = self.__get_train_batch()
             loss = self.model.train_on_batch(model_input, labels)
 
@@ -64,7 +64,7 @@ class OneShotRunner():
         train_accuracy = []
         test_accuracy = []
         predict_every = 10
-        for iteration in range(1, number_iterations):
+        for iteration in range(1, number_iterations+1):
             train_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
             test_accuracy.append(self.__test_one_shot(number_ways, number_validations))
             if iteration % predict_every == 0:
