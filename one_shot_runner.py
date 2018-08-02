@@ -14,6 +14,7 @@ class OneShotRunner():
 
         self.__best_accuracy_weights_file = self.__path.joinpath('best_accuracy_weights.h5')
         self.__training_data_file = self.__path.joinpath('training_data.pickle')
+        self.__predictions_data_file = self.__path.joinpath('predictions_data.pickle')
         
         self.__training_loss = []
         self.__training_accuracy = []
@@ -33,10 +34,11 @@ class OneShotRunner():
         
         if self.__training_data_file.exists():
             print('Preloading training data')
-            self.__read_data()
+            data = self.__read_data(self.__training_data_file)
+            self.__training_loss, self.__training_accuracy, self.__best_accuracy = data
     
-    def train(self, number_ways=20, number_iterations=10000, num_validations=500):
-        print(f'Start training for {number_iterations} iterations with {num_validations} validations per each {number_ways} ways evaluation')
+    def train(self, number_ways=20, number_iterations=10000, number_validations=500):
+        print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways evaluation')
         for iteration in range(1, number_iterations):
             model_input, labels = self.__get_train_batch()
             loss = self.model.train_on_batch(model_input, labels)
@@ -46,18 +48,32 @@ class OneShotRunner():
                 print(f'iteration {iteration}, loss = {loss:.2f}')
 
             if iteration % self.__evaluate_every == 0:
-                accuracy = self.__evaluate(number_ways, iteration, num_validations)
+                accuracy = self.__evaluate(number_ways, iteration, number_validations)
                 self.__training_accuracy.append(accuracy)
                 print(f'iteration {iteration}, accuracy = {accuracy}')
 
             if iteration % self.__store_every == 0:
                 print(f'Saving training data at iteration {iteration}')
-                self.__save_data()
+                data = self.__training_loss, self.__training_accuracy, self.__best_accuracy
+                self.__save_data(self.__training_data_file, data)
         
         print(f'Data after training: loss = {loss}, best accuracy = {self.__best_accuracy:.2f}')
         
-    def __evaluate(self, number_ways, iteration, num_validations):
-        accuracy = self.__test_one_shot(number_ways, num_validations)
+    def predict(self, number_ways=20, number_iterations=1000, number_validations=500):
+        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways prediction')
+        train_accuracy = []
+        test_accuracy = []
+        predict_every = 100
+        for iteration in range(1, number_iterations):
+            train_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
+            test_accuracy.append(self.__test_one_shot(number_ways, number_validations))
+            if iteration % predict_every == 0:
+                print(f'Predictions at iteration {iteration} finished')
+        data = train_accuracy, test_accuracy
+        self.__save_data(self.__predictions_data_file, data)
+
+    def __evaluate(self, number_ways, iteration, number_validations):
+        accuracy = self.__test_one_shot(number_ways, number_validations)
         if accuracy > self.__best_accuracy:
             print(f'Saving model weights with best accuracy of {accuracy:.2f}')
             self.model.save_weights(self.__best_accuracy_weights_file)
@@ -81,15 +97,15 @@ class OneShotRunner():
             
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
 
-    def __test_one_shot(self, num_ways, num_validations, data_type='test'):
+    def __test_one_shot(self, number_ways, number_validations, data_type='test'):
         accuracy = 0
-        for _ in range(num_validations):
-            model_input, labels = self.__get_one_shot_batch(num_ways, data_type)
+        for _ in range(number_validations):
+            model_input, labels = self.__get_one_shot_batch(number_ways, data_type)
             labels_hat = self.model.predict_on_batch(model_input)
             correct = np.argmax(labels_hat)==np.argmax(labels)
             accuracy += int(correct)
 
-        accuracy /= num_validations
+        accuracy /= number_validations
     
         return accuracy*100.
 
@@ -114,12 +130,11 @@ class OneShotRunner():
         left_encoder_input, rigth_encoder_input, labels = shuffle(left_encoder_input, rigth_encoder_input, labels)
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
 
-    def __save_data(self):
-        data = self.__training_loss, self.__training_accuracy, self.__best_accuracy
+    def __save_data(self, file, data):
         with open(str(self.__training_data_file), "wb") as f:
 	        pickle.dump(data, f)
 
-    def __read_data(self):
-        with open(str(self.__training_data_file), "rb") as f:
+    def __read_data(self, file):
+        with open(str(file), "rb") as f:
             data = pickle.load(f)
-        self.__training_loss, self.__training_accuracy, self.__best_accuracy = data
+        return data
