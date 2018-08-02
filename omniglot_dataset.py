@@ -5,7 +5,6 @@ import numpy as np
 class OmniglotDataset:
     
     def __init__(self, path="./data/"):
-        
         self.__path = path
         self.__train_folder = "train_alphabets"
         self.__test_folder = "test_alphabets"

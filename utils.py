@@ -1,6 +1,6 @@
 import pickle
 
-class Utils():
+class Utils:
 
     @staticmethod
     def save_data(file, data):

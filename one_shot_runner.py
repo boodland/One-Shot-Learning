@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.utils import shuffle
 from utils import Utils
 
-class OneShotRunner():
+class OneShotRunner:
+    
     def __init__(self, dataset, model, preload_data=True):
         self.dataset = dataset
         self.model = model

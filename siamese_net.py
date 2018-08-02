@@ -8,6 +8,7 @@ from keras.losses import binary_crossentropy
 import numpy as np
 
 class SiameseNet:
+    
     def __init__(self, input_shape):
         self.__input_shape = input_shape
         self.model = self.__build()

@@ -5,7 +5,6 @@ import zipfile
 class OmniglotService:
     
     def __init__(self, path):
-        
         self.__path = Path(path)
         if not self.__path.exists():
             self.__path.mkdir(parents=True, exist_ok=True)
