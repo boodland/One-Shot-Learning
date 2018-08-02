@@ -29,7 +29,7 @@ class OmniglotDataset:
 
     def get_image_pair(self, class_value, same_class=False, data_type='train'):
         data = self.train_data[0] if data_type=='train' else self.test_data[0]
-        num_classes, num_images, height, width, _ = data.shape
+        num_classes, num_images, _, _, _ = data.shape
         image_indices = np.random.choice(num_images, size=2, replace=(not same_class))
         
         first_image = data[class_value, image_indices[0]]
