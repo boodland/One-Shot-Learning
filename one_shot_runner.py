@@ -29,11 +29,12 @@ class OneShotRunner():
             self.__preload_data()
 
     def __preload_data(self):
-        print('Preloading runner data')
         if self.__best_accuracy_weights_file.exists():
+            print('Preloading best accuracy model weights')
             self.model.load_weights(str(self.__best_accuracy_weights_file))
         
         if self.__training_data_file.exists():
+            print('Preloading training data')
             self.__read_data()
     
     def train(self, number_iterations=10000, num_validation=500):
