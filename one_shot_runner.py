@@ -67,7 +67,7 @@ class OneShotRunner():
         predict_every = 10
         for iteration in range(1, number_iterations+1):
             train_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
-            val_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
+            val_accuracy.append(self.__test_one_shot(number_ways, number_validations))
             test_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='test'))
             if iteration % predict_every == 0:
                 print(f'Predictions at iteration {iteration} finished')
