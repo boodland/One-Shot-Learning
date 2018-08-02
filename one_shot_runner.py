@@ -45,18 +45,18 @@ class OneShotRunner():
 
             if iteration % self.__loss_every == 0:
                 self.__training_loss.append(loss)
-                print(f'iteration {iteration}, training loss: {loss:.2f}')
+                print(f'iteration {iteration}, loss = {loss:.2f}')
 
             if iteration % self.__evaluate_every == 0:
                 accuracy = self.__evaluate(iteration, num_validation)
                 self.__training_accuracy.append(accuracy)
-                print(f'Accuracy at iteration {iteration} = {accuracy}')
+                print(f'iteration {iteration}, accuracy = {accuracy}')
 
             if iteration % self.__store_every == 0:
-                self.__save_data()
                 print(f'Saving training data at iteration {iteration}')
+                self.__save_data()
         
-        print(f'Data after training: loss = {loss}, best accuracy {self.__best_accuracy:.2f}')
+        print(f'Data after training: loss = {loss}, best accuracy = {self.__best_accuracy:.2f}')
         
     def __evaluate(self, iteration, num_validation):
         accuracy = self.__test_one_shot(self.__number_ways, num_validation)
