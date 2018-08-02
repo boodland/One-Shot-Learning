@@ -15,7 +15,7 @@ class OneShotRunner():
         #weights_path = os.path.join(PATH, "weights")
         print("training")
         for i in range(number_iterations):
-            model_input, labels = self.__get_batch()
+            model_input, labels = self.__get_train_batch()
             loss = self.model.train_on_batch(model_input, labels)
 
             if i % loss_every == 0:
@@ -28,7 +28,7 @@ class OneShotRunner():
         
         print("training loss after training: {:.2f},".format(loss))
         
-    def __get_batch(self, batch_size=32):       
+    def __get_train_batch(self, batch_size=32):       
         half_batch_size = batch_size // 2
         left_encoder_input = []
         rigth_encoder_input = []
