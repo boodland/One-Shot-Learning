@@ -40,7 +40,7 @@ class OmniglotDataset:
         return first_image, second_image
 
     def __get_different_value(self, value, max_values):
-        values = list(range(0, max_values))
+        values = list(range(max_values))
         values.remove(value)
         different_value = np.random.choice(values)
         
