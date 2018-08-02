@@ -32,10 +32,10 @@ class OmniglotDataset:
         num_classes, num_images, height, width, _ = data.shape
         image_indices = np.random.choice(num_images, size=2, replace=(not same_class))
         
-        first_image = data[class_value, image_indices[0]].reshape(height, width, 1)
+        first_image = data[class_value, image_indices[0]]
         
         second_class = class_value if same_class else self.__get_different_value(class_value, num_classes)
-        second_image = data[second_class, image_indices[1]].reshape(height, width, 1)
+        second_image = data[second_class, image_indices[1]]
 
         return first_image, second_image
 
