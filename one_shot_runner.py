@@ -4,7 +4,7 @@ from sklearn.utils import shuffle
 from utils import Utils
 
 class OneShotRunner:
-    
+
     def __init__(self, dataset, model, preload_data=True):
         self.dataset = dataset
         self.model = model
@@ -126,7 +126,7 @@ class OneShotRunner:
         labels[0] = 1
 
         for class_value in classes_to_sample[1:]:
-            _, second_image = self.dataset.get_image_pair(class_value, data_type=data_type)
+            _, second_image = self.dataset.get_image_pair(class_value, data_type)
             left_encoder_input.append(first_image)
             rigth_encoder_input.append(second_image)
 
