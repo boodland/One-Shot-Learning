@@ -59,7 +59,7 @@ class OneShotRunner():
         
         print(f'Data after training: loss = {loss}, best accuracy = {self.__best_accuracy:.2f}')
         
-    def predict(self, number_ways=20, number_iterations=100, number_validations=500):
+    def predict(self, number_ways=20, number_iterations=100, number_validations=50):
         print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways prediction')
         train_accuracy = []
         test_accuracy = []
