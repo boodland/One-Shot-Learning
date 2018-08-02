@@ -62,14 +62,16 @@ class OneShotRunner():
     def predict(self, number_ways=20, number_iterations=100, number_validations=50):
         print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways prediction')
         train_accuracy = []
+        val_accuracy = []
         test_accuracy = []
         predict_every = 10
         for iteration in range(1, number_iterations+1):
             train_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
-            test_accuracy.append(self.__test_one_shot(number_ways, number_validations))
+            val_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
+            test_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='test'))
             if iteration % predict_every == 0:
                 print(f'Predictions at iteration {iteration} finished')
-        data = train_accuracy, test_accuracy
+        data = train_accuracy, val_accuracy, test_accuracy
         Utils.save_data(str(self.__predictions_data_file), data)
 
     def __evaluate(self, number_ways, iteration, number_validations):
@@ -97,7 +99,7 @@ class OneShotRunner():
             
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
 
-    def __test_one_shot(self, number_ways, number_validations, data_type='test'):
+    def __test_one_shot(self, number_ways, number_validations, data_type='val'):
         accuracy = 0
         for _ in range(number_validations):
             model_input, labels = self.__get_one_shot_batch(number_ways, data_type)
