@@ -21,7 +21,7 @@ class RunnerVisualizer:
         ax = plt.gca()
         y_axis_values = [0.1, 0.2, 0.3, 0.5, 0.75, 1, 2, 3, 4]
         ax.yaxis.set_ticks(y_axis_values)
-        ax.set_ylim(0.07, 4)
+        ax.set_ylim(0.05, 5)
         ax.set_yticklabels(y_axis_values)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
