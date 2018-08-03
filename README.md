@@ -24,6 +24,7 @@ This is an early version of a work in progress prototype.
 
 ## Roadmap
 
+- Allow Data configuration (normalization, resizing and augmentation...)
 - Allow more configuration parameters for the runner
 - Implement a NetworkConfigurator component for hyperparameter tunning
 - Implement another model using a different approach
