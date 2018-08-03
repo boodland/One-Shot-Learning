@@ -54,7 +54,7 @@ class RunnerVisualizer:
         ax.spines['right'].set_visible(False)
         plt.title('Training Accuracy using 500 validations per evaluation', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
-        plt.xlabel('Number of iterations (x1000)', fontsize=20)
+        plt.xlabel('Number of evaluations (1 every 1000 iterations)', fontsize=20)
         for xy in zip(x, y):
             x, y = xy
             ax.text(x-1.2, y+1.2, f'{y:.2f}', fontsize=15)
@@ -73,7 +73,7 @@ class RunnerVisualizer:
         ax.spines['left'].set_visible(False)
         plt.tick_params(axis='y', labelsize=15)
         plt.tick_params(axis='x', labelsize=20)
-        plt.title('Predictions Accuracy using 50 validations per prediction', fontsize=20)
+        plt.title('One-shot (20-way) on 100 predictions using 50 validations per prediction', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
         plt.xlabel('Data Set', fontsize=20)
         plt.ylim(64, 101)
