@@ -4,7 +4,7 @@ import zipfile
 
 class OmniglotService:
     
-    def __init__(self, path):
+    def __init__(self, path='./data/'):
         self.__path = Path(path)
         if not self.__path.exists():
             self.__path.mkdir(parents=True, exist_ok=True)
@@ -14,9 +14,15 @@ class OmniglotService:
         self.__test_tag = "images_evaluation"
         self.__filename_extension = '.zip'
         
-    def get_data(self, folder, train_data=True):
-        tag = self.__train_tag if train_data else self.__test_tag
-        self.__get_data(tag, folder)
+    def get_data(self):
+        self.get_data_type('train_set')
+        self.get_data_type('test_set', data_type='test')
+
+    def get_data_type(self, folder_name, data_type='train'):
+        to_folder = self.__path.joinpath(folder_name)
+        if not to_folder.exists():
+            tag = self.__train_tag if (data_type == 'train') else self.__test_tag
+            self.__get_data(tag, to_folder)
             
     def __get_data(self, data_type, to_folder):
         data_url = self.__root_url + data_type + self.__filename_extension
