@@ -28,7 +28,7 @@ class RunnerVisualizer:
         plt.ylabel('Cost', fontsize=20)
         plt.xlabel('Number of iterations (x100)', fontsize=20)
         x_offset = 2 * (total_data/step)
-        y_offset = 0.1 * (total_data/step)
+        y_offset = 0.25 * (total_data/step)
         for xy in zip(x, y):
             x, y = xy
             ax.text(x-x_offset, y+y_offset, f'{y:.2f}', fontsize=15)
@@ -55,7 +55,7 @@ class RunnerVisualizer:
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        plt.title('Training Accuracy using 50 validations per evaluation\nwith maximum cost per epoch (10000 iterations)', fontsize=20)
+        plt.title('Validation Accuracy using 50 validations per evaluation\nwith maximum cost per epoch (10000 iterations)', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
         plt.xlabel('Number of evaluations (1 every 1000 iterations)', fontsize=20)
         x_offset = 0.3 * (total_data/step)
