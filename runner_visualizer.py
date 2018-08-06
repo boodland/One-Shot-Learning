@@ -17,12 +17,9 @@ class RunnerVisualizer:
         plt.figure(figsize=(14,6))
         plt.plot(loss_data)
         plt.plot(x, y, 'o')
-        plt.yscale('log', basey=np.e)
         ax = plt.gca()
-        y_axis_values = [0.1, 0.2, 0.3, 0.5, 0.75, 1, 2, 3, 4]
-        ax.yaxis.set_ticks(y_axis_values)
-        ax.set_ylim(0.05, 5)
-        ax.set_yticklabels(y_axis_values)
+        ylim_max = np.max(loss_data)
+        ax.set_ylim(0, ylim_max+0.5)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         plt.tick_params(axis='both', labelsize=14)
@@ -31,15 +28,15 @@ class RunnerVisualizer:
         plt.xlabel('Number of iterations (x100)', fontsize=20)
         for xy in zip(x, y):
             x, y = xy
-            ax.text(x-8, (np.log(y)+3)/10, f'{y:.2f}', fontsize=15)
+            ax.text(x-8, y+0.5, f'{y:.2f}', fontsize=15)
         plt.show()
 
     @staticmethod
-    def display_accuracy(training_accuracy):
+    def display_accuracy(training_accuracy, step=10):
         x = []
         y = []
-        for i in range(0, len(training_accuracy), 10):
-            epoch = training_accuracy[i:i+10]
+        for i in range(0, len(training_accuracy), step):
+            epoch = training_accuracy[i:i+step]
             x.append(np.argmax(epoch)+i)
             y.append(np.max(epoch))
 
@@ -47,7 +44,9 @@ class RunnerVisualizer:
         plt.figure(figsize=(14,5))
         plt.plot(training_accuracy)
         plt.plot(x, y, 'o')
-        plt.ylim(60, 95)
+        ylim_min = np.min(training_accuracy)
+        ylim_max = np.max(training_accuracy)
+        plt.ylim(ylim_min-5, ylim_max+5)
         plt.tick_params(axis='both', labelsize=14)
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
@@ -76,5 +75,7 @@ class RunnerVisualizer:
         plt.title('One-shot (20-way) on 100 predictions using 50 validations per prediction', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
         plt.xlabel('Data Set', fontsize=20)
-        plt.ylim(64, 101)
+        ylim_min = np.min(predictions)
+        ylim_max = np.max(predictions)
+        plt.ylim(ylim_min-5, ylim_max+5)
         plt.show()
