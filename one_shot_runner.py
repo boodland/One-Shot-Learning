@@ -38,7 +38,7 @@ class OneShotRunner:
             data = Utils.read_data(str(self.__training_data_file))
             self.__training_loss, self.__training_accuracy, self.__best_accuracy = data
     
-    def train(self, number_ways=20, number_iterations=10000, number_validations=500):
+    def train(self, number_ways=20, number_iterations=50000, number_validations=50):
         print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways evaluation')
         for iteration in range(1, number_iterations+1):
             model_input, labels = self.__get_train_batch()
@@ -73,6 +73,7 @@ class OneShotRunner:
             if iteration % predict_every == 0:
                 print(f'Predictions at iteration {iteration} finished')
         data = train_accuracy, val_accuracy, test_accuracy
+        print(f'Saving prediction data to {self.__predictions_data_file}')
         Utils.save_data(str(self.__predictions_data_file), data)
 
     def __evaluate(self, number_ways, iteration, number_validations):
