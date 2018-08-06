@@ -38,8 +38,8 @@ class OneShotRunner:
             data = Utils.read_data(str(self.__training_data_file))
             self.__training_loss, self.__training_accuracy, self.__best_accuracy = data
     
-    def train(self, number_ways=20, number_iterations=50000, number_validations=50):
-        print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways evaluation')
+    def train(self, number_ways=20, number_iterations=10000, number_validations=50):
+        print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways evaluation')
         for iteration in range(1, number_iterations+1):
             model_input, labels = self.__get_train_batch()
             loss = self.model.train_on_batch(model_input, labels)
@@ -61,7 +61,7 @@ class OneShotRunner:
         print(f'Data after training: loss = {loss}, best accuracy = {self.__best_accuracy:.2f}')
         
     def predict(self, number_ways=20, number_iterations=100, number_validations=50):
-        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways} ways prediction')
+        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways prediction')
         train_accuracy = []
         val_accuracy = []
         test_accuracy = []
