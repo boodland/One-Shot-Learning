@@ -9,7 +9,8 @@ class RunnerVisualizer:
         sns.set_style("white")
         x = []
         y = []
-        for i in range(0, len(loss_data), step):
+        total_data = len(loss_data)
+        for i in range(0, total_data, step):
             epoch = loss_data[i:i+step]
             x.append(np.argmin(epoch)+i)
             y.append(np.min(epoch))
@@ -23,19 +24,22 @@ class RunnerVisualizer:
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         plt.tick_params(axis='both', labelsize=14)
-        plt.title('Training Loss Cost', fontsize=20)
+        plt.title('Training Loss Cost\nwith minimum cost per epoch (10000 iterations)', fontsize=20)
         plt.ylabel('Cost', fontsize=20)
         plt.xlabel('Number of iterations (x100)', fontsize=20)
+        x_offset = 2 * (total_data/step)
+        y_offset = 0.1 * (total_data/step)
         for xy in zip(x, y):
             x, y = xy
-            ax.text(x-8, y+0.5, f'{y:.2f}', fontsize=15)
+            ax.text(x-x_offset, y+y_offset, f'{y:.2f}', fontsize=15)
         plt.show()
 
     @staticmethod
     def display_accuracy(training_accuracy, step=10):
         x = []
         y = []
-        for i in range(0, len(training_accuracy), step):
+        total_data = len(training_accuracy)
+        for i in range(0, total_data, step):
             epoch = training_accuracy[i:i+step]
             x.append(np.argmax(epoch)+i)
             y.append(np.max(epoch))
@@ -51,12 +55,13 @@ class RunnerVisualizer:
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        plt.title('Training Accuracy using 500 validations per evaluation', fontsize=20)
+        plt.title('Training Accuracy using 50 validations per evaluation\nwith maximum cost per epoch (10000 iterations)', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
         plt.xlabel('Number of evaluations (1 every 1000 iterations)', fontsize=20)
+        x_offset = 0.3 * (total_data/step)
         for xy in zip(x, y):
             x, y = xy
-            ax.text(x-1.2, y+1.2, f'{y:.2f}', fontsize=15)
+            ax.text(x-x_offset, y+1.5, f'{y:.2f}', fontsize=15)
         plt.show()
 
     @staticmethod
@@ -72,9 +77,9 @@ class RunnerVisualizer:
         ax.spines['left'].set_visible(False)
         plt.tick_params(axis='y', labelsize=15)
         plt.tick_params(axis='x', labelsize=20)
-        plt.title('One-shot (20-way) on 100 predictions using 50 validations per prediction', fontsize=20)
+        plt.title('One-shot 20-way task on 100 predictions\nusing 50 validations per prediction', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
-        plt.xlabel('Data Set', fontsize=20)
+        plt.xlabel('Data Set Types', fontsize=20)
         ylim_min = np.min(predictions)
         ylim_max = np.max(predictions)
         plt.ylim(ylim_min-5, ylim_max+5)
