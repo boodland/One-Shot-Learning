@@ -49,7 +49,7 @@ class OmniglotLoader:
             for character_folder in alphabet_folder.iterdir() if character_folder.is_dir()
         ]
 
-        return sorted(alphabet_character_paths)
+        return np.array(sorted(alphabet_character_paths))
 
     def __get_class_images(self, alphabets_folder, alphabet_character_paths):
         classes = [
