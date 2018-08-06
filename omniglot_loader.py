@@ -7,7 +7,7 @@ from omniglot_service import OmniglotService
 
 class OmniglotLoader:
     
-    def __init__(self, path, train_folder, test_folder):
+    def __init__(self, path='./data', train_folder='train_set', test_folder='test_set'):
         self.__path = Path(path)
         self.__train_folder = self.__path.joinpath(train_folder)
         self.__test_folder = self.__path.joinpath(test_folder)
@@ -18,22 +18,25 @@ class OmniglotLoader:
     
     def load_data(self):
         train_data = self.__load_data(self.__train_file, self.__train_folder)
-        test_data = self.__load_data(self.__test_file, self.__test_folder, train_data=False)
+        test_data = self.__load_data(self.__test_file, self.__test_folder, data_type='test')
 
         return (train_data, test_data)
 
-    def __load_data(self, file, folder, train_data=True):
+    def __load_data(self, file, folder, data_type='train'):
         if file.exists():
+            print(f'Loading data from {file}')
             data = Utils.read_data(str(file))
         else:
             if not folder.exists():
-                self.__data_service.get_data(folder, train_data)
+                self.__data_service.get_data_type(folder.name, data_type)
             data = self.__load_alphabets(folder)
+            print(f'Saving data to {file}')
             Utils.save_data(str(file), data)
 
         return data
     
     def __load_alphabets(self, alphabets_folder):
+        print(f'Loading data from {alphabets_folder}')
         alphabet_character_paths = self.__get_alphabet_character_paths(alphabets_folder)
         class_images = self.__get_class_images(alphabets_folder, alphabet_character_paths)
 
