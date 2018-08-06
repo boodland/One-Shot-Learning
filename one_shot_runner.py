@@ -5,7 +5,7 @@ from utils import Utils
 
 class OneShotRunner:
 
-    def __init__(self, dataset, model, preload_data=True):
+    def __init__(self, dataset, model, preload_data=False):
         self.dataset = dataset
         self.model = model
         
