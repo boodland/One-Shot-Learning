@@ -11,17 +11,17 @@ class OmniglotDataset:
         
         self.__data_loader = OmniglotLoader(self.__path, self.__train_folder, self.__test_folder)
         
-        self.train_data = ()
-        self.val_data = ()
-        self.test_data = ()
+        self.train_set = ()
+        self.val_set = ()
+        self.test_set = ()
         self.data_shape = ()
     
     def load(self):
-        train_val_data, self.test_data = self.__data_loader.load_data()
-        _, _, height, width, channel = train_val_data[0].shape
-        start_index_val = train_val_data[1].index('Latin/character01')
-        self.train_data = (train_val_data[0][:start_index_val], train_val_data[1][:start_index_val])
-        self.val_data =  (train_val_data[0][start_index_val:], train_val_data[1][start_index_val:])
+        train_val_set, self.test_set = self.__data_loader.load_data()
+        _, _, height, width, channel = train_val_set[0].shape
+        start_index_val = train_val_set[1].tolist().index('Latin/character01')
+        self.train_set = (train_val_set[0][:start_index_val], train_val_set[1][:start_index_val])
+        self.val_set =  (train_val_set[0][start_index_val:], train_val_set[1][start_index_val:])
         self.data_shape = (height, width, channel)
 
     def get_data_classes(self, num_classes, data_type='train'):
@@ -51,9 +51,9 @@ class OmniglotDataset:
 
     def __get_data_type(self, data_type):
         if (data_type == 'train'): 
-            return self.train_data[0]
+            return self.train_set[0]
         elif (data_type == 'val'): 
-            return self.val_data[0]
+            return self.val_set[0]
         else:
-            return self.test_data[0]
+            return self.test_set[0]
 
