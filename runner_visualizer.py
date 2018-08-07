@@ -24,9 +24,9 @@ class RunnerVisualizer:
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         plt.tick_params(axis='both', labelsize=14)
-        plt.title('Training Loss Cost\nwith minimum cost per epoch (10000 iterations)', fontsize=20)
+        plt.title('Training Loss Cost\nwith minimum cost per epoch (10000 iterations)\n', fontsize=20)
         plt.ylabel('Cost', fontsize=20)
-        plt.xlabel('Number of iterations (x100)', fontsize=20)
+        plt.xlabel('\nNumber of iterations (x100)', fontsize=20)
         x_offset = 2 * (total_data/step)
         y_offset = 0.25 * (total_data/step)
         for xy in zip(x, y):
@@ -55,9 +55,9 @@ class RunnerVisualizer:
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        plt.title('Validation Accuracy using 50 validations per evaluation\nwith maximum cost per epoch (10000 iterations)', fontsize=20)
+        plt.title('Validation Accuracy using 50 validations per evaluation\nwith maximum accuracy per epoch (10000 iterations)\n', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
-        plt.xlabel('Number of evaluations (1 every 1000 iterations)', fontsize=20)
+        plt.xlabel('\nNumber of evaluations (1 every 1000 iterations)', fontsize=20)
         x_offset = 0.3 * (total_data/step)
         for xy in zip(x, y):
             x, y = xy
@@ -65,7 +65,7 @@ class RunnerVisualizer:
         plt.show()
 
     @staticmethod
-    def display_predictions_accuracy(predictions):
+    def display_predictions(predictions):
         sns.set_style("whitegrid")
         plt.figure(figsize=(10,5))
         ax = sns.boxplot(data= predictions, orient='v')
@@ -77,9 +77,9 @@ class RunnerVisualizer:
         ax.spines['left'].set_visible(False)
         plt.tick_params(axis='y', labelsize=15)
         plt.tick_params(axis='x', labelsize=20)
-        plt.title('One-shot 20-way task on 100 predictions\nusing 50 validations per prediction', fontsize=20)
+        plt.title('One-shot 20-way task on 100 predictions\nusing 50 validations per prediction\n', fontsize=20)
         plt.ylabel('Accuracy', fontsize=20)
-        plt.xlabel('Data Set Types', fontsize=20)
+        plt.xlabel('\nData Set Types', fontsize=20)
         ylim_min = np.min(predictions)
         ylim_max = np.max(predictions)
         plt.ylim(ylim_min-5, ylim_max+5)
