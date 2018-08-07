@@ -26,5 +26,6 @@ This is an early version of a work in progress prototype.
 
 - Allow Data preprocessing (normalization, resizing, augmentation...)
 - Allow more configuration parameters for the runner
+- Allow more distance discriminator functions to compare two images
 - Implement a NetworkConfigurator component for hyperparameter tunning
 - Implement another model using a different approach
