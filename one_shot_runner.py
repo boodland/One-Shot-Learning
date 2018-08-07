@@ -45,7 +45,7 @@ class OneShotRunner:
             self.__preload_weights()
             self.__preload_data()
 
-        print(f'Start training for {number_iterations} iterations with {number_validations} validations per {number_ways}-ways evaluation')
+        print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways evaluation')
         for iteration in range(1, number_iterations+1):
             model_input, labels = self.__get_train_batch()
             loss, accuracy = self.model.train_on_batch(model_input, labels)
@@ -67,11 +67,11 @@ class OneShotRunner:
                 Utils.save_data(str(self.__training_data_file), data)
                 self.model.save_weights(self.__model_weights_file)
         
-    def predict(self, number_ways=20, number_iterations=100, number_validations=50, preload_weights=False):
+    def predict(self, number_ways=20, number_iterations=100, number_validations=50, preload_weights=True):
         if preload_weights:
             self.__preload_weights()
 
-        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per {number_ways}-ways prediction')
+        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways prediction')
         train_accuracy = []
         val_accuracy = []
         test_accuracy = []
