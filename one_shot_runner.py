@@ -65,7 +65,9 @@ class OneShotRunner:
                 print(f'Saving training data at iteration {iteration}')
                 data = self.__training_loss, self.__training_accuracy, self.__validation_loss, self.__validation_accuracy
                 Utils.save_data(str(self.__training_data_file), data)
-                self.model.save_weights(self.__model_weights_file)
+        
+        print(f'Saving model weights')
+        self.model.save_weights(self.__model_weights_file)
         
     def predict(self, number_ways=20, number_iterations=100, number_validations=50, preload_state=False):
         if preload_state:
