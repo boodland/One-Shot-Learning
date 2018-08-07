@@ -16,7 +16,7 @@ The codebase has been divided in the following components:
 - RunnerVisualizer: To display runner results.
 - Utils: I/O funtionality to read/save state/data.
 
-Details about the machine learning problem, the implementation details and experiments are explained in detail in the [one shot](https://github.com/boodland/One-Shot-Learning/blob/master/one_shot.ipynb) notebook.
+Details about the machine learning problem, the implementation details and experiments are explained in the [one shot](https://github.com/boodland/One-Shot-Learning/blob/master/one_shot.ipynb) notebook.
 
 ## Disclaimer
 
@@ -24,7 +24,7 @@ This is an early version of a work in progress prototype.
 
 ## Roadmap
 
-- Allow Data preprocessing (normalization, resizing, augmentation...)
+- Allow Data preprocessing (normalization, resizing, augmentation, ...)
 - Allow more configuration parameters for the runner
 - Allow more distance discriminator functions to compare two encoded images
 - Implement a NetworkConfigurator component for hyperparameter tunning
