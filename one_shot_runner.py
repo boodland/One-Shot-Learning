@@ -40,12 +40,12 @@ class OneShotRunner:
             data = Utils.read_data(str(self.__training_data_file))
             self.__training_loss, self.__training_accuracy, self.__validation_loss, self.__validation_accuracy = data
     
-    def train(self, number_ways=20, number_iterations=10000, number_validations=50, preload_state=False):
+    def train(self, number_way=20, number_iterations=10000, number_validations=50, preload_state=False):
         if preload_state:
             self.__preload_weights()
             self.__preload_data()
 
-        print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways one shot task')
+        print(f'Start training for {number_iterations} iterations with {number_validations} validations per each one-shot {number_way}-way task')
         for iteration in range(1, number_iterations+1):
             model_input, labels = self.get_train_batch()
             loss, accuracy = self.model.train_on_batch(model_input, labels)
@@ -56,7 +56,7 @@ class OneShotRunner:
                 print(f'iteration {iteration}, loss = {loss:.2f}, accuracy = {accuracy:.2f}')
 
             if iteration % self.__evaluate_every == 0:
-                loss, accuracy = self.__evaluate_one_shot(number_ways, number_validations)
+                loss, accuracy = self.__evaluate_one_shot(number_way, number_validations)
                 self.__validation_loss.append(loss)
                 self.__validation_accuracy.append(accuracy)
                 print(f'evaluation at iteration {iteration}, loss = {loss:.2f}, accuracy = {accuracy:.2f}')
@@ -69,19 +69,19 @@ class OneShotRunner:
         print(f'Saving model weights')
         self.model.save_weights(self.__model_weights_file)
         
-    def predict(self, number_ways=20, number_iterations=100, number_validations=50, preload_state=False):
+    def predict(self, number_way=20, number_iterations=100, number_validations=50, preload_state=False):
         if preload_state:
             self.__preload_weights()
 
-        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways one shot task')
+        print(f'Start predictions for {number_iterations} iterations with {number_validations} validations per each one-shot {number_way}-way task')
         train_accuracy = []
         val_accuracy = []
         test_accuracy = []
         predict_every = 10
         for iteration in range(1, number_iterations+1):
-            train_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='train'))
-            val_accuracy.append(self.__test_one_shot(number_ways, number_validations, data_type='val'))
-            test_accuracy.append(self.__test_one_shot(number_ways, number_validations))
+            train_accuracy.append(self.__test_one_shot(number_way, number_validations, data_type='train'))
+            val_accuracy.append(self.__test_one_shot(number_way, number_validations, data_type='val'))
+            test_accuracy.append(self.__test_one_shot(number_way, number_validations))
             if iteration % predict_every == 0:
                 print(f'Predictions at iteration {iteration} finished')
         data = train_accuracy, val_accuracy, test_accuracy
@@ -104,11 +104,11 @@ class OneShotRunner:
         left_encoder_input, rigth_encoder_input, labels = shuffle(left_encoder_input, rigth_encoder_input, labels)
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
 
-    def __evaluate_one_shot(self, number_ways, number_validations, data_type='val'):
+    def __evaluate_one_shot(self, number_way, number_validations, data_type='val'):
         accuracy = 0
         loss = 0
         for _ in range(number_validations):
-            model_input, labels = self.get_one_shot_batch(number_ways, data_type)
+            model_input, labels = self.get_one_shot_batch(number_way, data_type)
             labels_hat = self.model.predict_on_batch(model_input)
             y_true = K.variable(labels)
             y_pred = K.variable(labels_hat.squeeze())
@@ -120,10 +120,10 @@ class OneShotRunner:
         loss /= number_validations
         return loss, accuracy*100.
 
-    def __test_one_shot(self, number_ways, number_validations, data_type='test'):
+    def __test_one_shot(self, number_way, number_validations, data_type='test'):
         accuracy = 0
         for _ in range(number_validations):
-            model_input, labels = self.get_one_shot_batch(number_ways, data_type)
+            model_input, labels = self.get_one_shot_batch(number_way, data_type)
             labels_hat = self.model.predict_on_batch(model_input)
             correct = np.argmax(labels_hat)==np.argmax(labels)
             accuracy += int(correct)
