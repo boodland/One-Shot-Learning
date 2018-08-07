@@ -47,7 +47,7 @@ class OneShotRunner:
 
         print(f'Start training for {number_iterations} iterations with {number_validations} validations per each {number_ways}-ways evaluation')
         for iteration in range(1, number_iterations+1):
-            model_input, labels = self.__get_train_batch()
+            model_input, labels = self.get_train_batch()
             loss, accuracy = self.model.train_on_batch(model_input, labels)
             accuracy *= 100.
             if iteration % self.__report_every == 0:
@@ -86,7 +86,7 @@ class OneShotRunner:
         print(f'Saving prediction data to {self.__predictions_data_file}')
         Utils.save_data(str(self.__predictions_data_file), data)
 
-    def __get_train_batch(self, batch_size=32):       
+    def get_train_batch(self, batch_size=32):       
         half_batch_size = batch_size // 2
         left_encoder_input = []
         rigth_encoder_input = []
@@ -99,7 +99,7 @@ class OneShotRunner:
             first_image, second_image = self.dataset.get_image_pair(class_value, same_class=is_same_class)
             left_encoder_input.append(first_image)
             rigth_encoder_input.append(second_image)
-            
+        left_encoder_input, rigth_encoder_input, labels = shuffle(left_encoder_input, rigth_encoder_input, labels)
         return [np.array(left_encoder_input), np.array(rigth_encoder_input)], labels
 
     def __evaluate_one_shot(self, number_ways, number_validations, data_type='val'):
