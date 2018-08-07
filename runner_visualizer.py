@@ -28,10 +28,9 @@ class RunnerVisualizer:
         plt.ylabel('Cost', fontsize=20)
         plt.xlabel('\nNumber of iterations (x100)', fontsize=20)
         x_offset = 2 * (total_data/step)
-        y_offset = 0.25 * (total_data/step)
         for xy in zip(x, y):
             x, y = xy
-            ax.text(x-x_offset, y+y_offset, f'{y:.2f}', fontsize=15)
+            ax.text(x-x_offset, y+0.25, f'{y:.2f}', fontsize=15)
         plt.show()
 
     @staticmethod
