@@ -16,7 +16,7 @@ The codebase has been divided in the following components:
 - RunnerVisualizer: To display runner results.
 - Utils: I/O funtionality to read/save state/data.
 
-Details about the machine learning problem, the implementation details and experiments are explained in the [one shot](https://github.com/boodland/One-Shot-Learning/blob/master/one_shot.ipynb) notebook.
+Details about the machine learning problem, the implementation and experiments are explained in the [one shot](https://github.com/boodland/One-Shot-Learning/blob/master/one_shot.ipynb) notebook.
 
 ## Disclaimer
 
