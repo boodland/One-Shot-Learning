@@ -1,6 +1,6 @@
 # One Shot Learning
 
-One Shot Learning using [Omniglot data set](https://github.com/brendenlake/omniglot) and Siamese Network.
+One Shot Learning using [Omniglot data set](https://github.com/brendenlake/omniglot) and Siamese Network
 
 This repository contains an implementation version of the paper [koch et al, Siamese Networks for one-shot learning](http://www.cs.cmu.edu/~rsalakhu/papers/oneshot1.pdf).
 
